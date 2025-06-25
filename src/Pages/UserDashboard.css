@@ -1,0 +1,162 @@
+.user-dashboard {
+  text-align: center;
+  padding-bottom: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.user-dashboard h2 {
+  color: #343a40;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.user-dashboard p {
+  color: #495057;
+  font-size: 1.1rem;
+}
+
+.course-options {
+   display: flex;
+  flex-direction: row; 
+  justify-content: center;
+  gap: 2.5rem;
+  margin-top: 2.5rem;
+  flex-wrap: nowrap;
+}
+
+.course-card {
+  background: linear-gradient(120deg, #f8fafc 60%, #e9ecef 100%);
+  border-radius: 18px;
+  box-shadow: 0 8px 36px rgba(52,58,64,0.13);
+  padding: 2.2rem 1.7rem 1.7rem 1.7rem;
+  width: 240px;
+  transition: box-shadow 0.25s, transform 0.25s, border 0.2s;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.course-card.paid {
+  border-color: #ffc107;
+  background: linear-gradient(120deg, #fffbe6 60%, #ffe082 100%);
+}
+
+.course-card.free {
+  border-color: #007bff;
+  background: linear-gradient(120deg, #e3f0ff 60%, #b3d7ff 100%);
+}
+
+.course-card.paid h3::before {
+  content: "💎 ";
+  font-size: 1.3rem;
+}
+
+.course-card.free h3::before {
+  content: "🎓 ";
+  font-size: 1.3rem;
+}
+
+.course-card.paid h3 {
+  color: #b28704;
+}
+
+.course-card.free h3 {
+  color: #0056b3;
+}
+
+.course-card h3 {
+  margin-bottom: 0.8rem;
+  font-size: 1.35rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.course-card p {
+  color: #495057;
+  margin-bottom: 1.3rem;
+  font-size: 1.07rem;
+}
+
+.course-card.paid .course-btn {
+  background: linear-gradient(90deg, #ffc107 60%, #ffecb3 100%);
+  color: #343a40;
+}
+
+.course-card.free .course-btn {
+  background: linear-gradient(90deg, #007bff 60%, #b3d7ff 100%);
+  color: #fff;
+}
+
+.course-card.paid .course-btn:hover {
+  background: #b28704;
+  color: #fff;
+}
+
+.course-card.free .course-btn:hover {
+  background: #0056b3;
+  color: #fff;
+}
+
+.course-card.paid::before,
+.course-card.free::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  border-radius: 18px 18px 0 0;
+}
+
+.course-card.paid::before {
+  background: linear-gradient(90deg, #ffc107 60%, #ffecb3 100%);
+}
+
+.course-card.free::before {
+  background: linear-gradient(90deg, #007bff 60%, #b3d7ff 100%);
+}
+
+.course-card:hover {
+  box-shadow: 0 16px 48px rgba(52,58,64,0.20);
+  transform: translateY(-8px) scale(1.04);
+  border-width: 4px;
+}
+
+.course-btn {
+  border: none;
+  padding: 0.8rem 1.7rem;
+  border-radius: 8px;
+  font-size: 1.07rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s, transform 0.18s;
+  box-shadow: 0 2px 8px rgba(52,58,64,0.08);
+}
+
+@media (max-width: 900px) {
+  .course-options {
+    gap: 1.2rem;
+  }
+  .course-card {
+    width: 90vw;
+    max-width: 340px;
+    padding: 1.3rem 0.7rem 1rem 0.7rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .course-options {
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: center;
+  }
+  .course-card {
+    width: 98vw;
+    max-width: 98vw;
+    padding: 1.1rem 0.5rem 0.8rem 0.5rem;
+  }
+}
