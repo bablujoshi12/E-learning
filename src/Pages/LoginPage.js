@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import './LoginPage.css';
 
-// Yup validation schema
+// Main login schema
 const schema = yup.object().shape({
   email: yup.string().email('Enter a valid email').required('Email is required'),
   password: yup
@@ -17,14 +17,18 @@ const schema = yup.object().shape({
     ),
 });
 
+// Forgot password schema
+const forgotSchema = yup.object().shape({
+  email: yup.string().email('Enter a valid email').required('Email is required'),
+});
+
 function LoginPage({ setUser, prefill = {} }) {
   const [showAdmin, setShowAdmin] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
   const [forgotMsg, setForgotMsg] = useState('');
   const navigate = useNavigate();
 
-
-  
+  // User login form
   const {
     register,
     handleSubmit,
@@ -35,6 +39,18 @@ function LoginPage({ setUser, prefill = {} }) {
     defaultValues: {
       email: prefill.email || '',
       password: prefill.password || '',
+    },
+  });
+
+  // Forgot password form
+  const {
+    register: registerForgot,
+    handleSubmit: handleForgotSubmit,
+    formState: { errors: forgotErrors }
+  } = useForm({
+    resolver: yupResolver(forgotSchema),
+    defaultValues: {
+      email: '',
     },
   });
 
@@ -53,14 +69,8 @@ function LoginPage({ setUser, prefill = {} }) {
     navigate('/admin-dashboard');
   };
 
-  const handleForgotPassword = (e) => {
-    e.preventDefault();
-    const email = document.querySelector('input[name="email"]')?.value;
-    if (email) {
-      setForgotMsg(`Password reset link sent to ${email}`);
-    } else {
-      setForgotMsg('Please enter your email above.');
-    }
+  const handleForgotPassword = (data) => {
+    setForgotMsg(`Password reset link sent to ${data.email}`);
   };
 
   return (
@@ -114,7 +124,13 @@ function LoginPage({ setUser, prefill = {} }) {
             </span>
           </p>
           {showForgot && (
-            <form onSubmit={handleForgotPassword} style={{ marginTop: 10 }}>
+            <form onSubmit={handleForgotSubmit(handleForgotPassword)} style={{ marginTop: 10 }}>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                {...registerForgot('email')}
+              />
+              {forgotErrors.email && <p style={{ color: 'red', margin: 0 }}>{forgotErrors.email.message}</p>}
               <button type="submit" className="admin-login-btn" style={{ width: '100%' }}>
                 Send Reset Link
               </button>
