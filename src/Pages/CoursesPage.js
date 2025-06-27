@@ -4,19 +4,25 @@ const courses = [
   {
     title: "Web Development Bootcamp",
     description: "Learn HTML, CSS, JavaScript, and React from scratch. Build real-world projects.",
-    image: "/courses.gif",
+    image: "https://media.giphy.com/media/du3J3cXyzhj75IOgvA/giphy.gif", // web dev gif
     duration: "8 weeks"
   },
   {
-    title: "Python for Beginners",
-    description: "Start coding in Python and explore data science basics.",
-    image: "/progress.gif",
-    duration: "6 weeks"
+    title: "C Programming Essentials",
+    description: "Start coding in C and understand the basics of programming and memory management.",
+    image: "https://media.giphy.com/media/26ufnwz3wDUli7GU0/giphy.gif", // C language gif
+    duration: "5 weeks"
+  },
+  {
+    title: "C++ Masterclass",
+    description: "Learn object-oriented programming and advanced concepts with C++.",
+    image: "https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif", // C++ gif
+    duration: "7 weeks"
   },
   {
     title: "Data Structures & Algorithms",
     description: "Master DSA for interviews and competitive programming.",
-    image: "/community.gif",
+    image: "https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif", // DSA gif
     duration: "10 weeks"
   }
 ];
@@ -25,7 +31,7 @@ function CoursesPage() {
   return (
     <div className="home-container">
       <div className="homepage-illustration" aria-hidden="true">
-        <img src="/courses.gif" alt="Courses" style={{ height: '3.5rem' }} />
+        <img src="https://media.giphy.com/media/du3J3cXyzhj75IOgvA/giphy.gif" alt="Courses" style={{ height: '3.5rem' }} />
       </div>
       <h1>
         Our <span className="highlight">Courses</span>

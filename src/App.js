@@ -11,8 +11,9 @@ import AboutPage from "./Pages/AboutPage";
 import CoursesPage from "./Pages/CoursesPage";
 import ContactPage from "./Pages/ContactPage";
 import { useState } from "react";
+import PaidCourses from './Pages/PaidCourses';
+import FreeCourses from './Pages/FreeCourses';
 
-// Helper component to conditionally render Navbar
 function NavbarWrapper() {
   const location = useLocation();
   // Hide Navbar only on homepage
@@ -56,7 +57,8 @@ function App() {
   <Route path="/about" element={<AboutPage />} /> 
   <Route path="/courses" element={<CoursesPage />} />
   <Route path="/contact" element={<ContactPage />} />
-
+<Route path="/paid-courses" element={<PaidCourses />} />
+<Route path="/free-courses" element={<FreeCourses />} />
 </Routes>
     </Router>
   );
