@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import './LoginPage.css';
 
-// Main login schema
+// Login schema
 const schema = yup.object().shape({
   email: yup.string().email('Enter a valid email').required('Email is required'),
   password: yup
@@ -17,18 +17,12 @@ const schema = yup.object().shape({
     ),
 });
 
-// Forgot password schema
-const forgotSchema = yup.object().shape({
-  email: yup.string().email('Enter a valid email').required('Email is required'),
-});
-
 function LoginPage({ setUser, prefill = {} }) {
-  const [showAdmin, setShowAdmin] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
   const [forgotMsg, setForgotMsg] = useState('');
   const navigate = useNavigate();
 
-  // User login form
+  // Login form
   const {
     register,
     handleSubmit,
@@ -48,7 +42,9 @@ function LoginPage({ setUser, prefill = {} }) {
     handleSubmit: handleForgotSubmit,
     formState: { errors: forgotErrors }
   } = useForm({
-    resolver: yupResolver(forgotSchema),
+    resolver: yupResolver(yup.object().shape({
+      email: yup.string().email('Enter a valid email').required('Email is required'),
+    })),
     defaultValues: {
       email: '',
     },
@@ -59,14 +55,15 @@ function LoginPage({ setUser, prefill = {} }) {
     if (prefill.password) setValue('password', prefill.password);
   }, [prefill, setValue]);
 
-  const onUserLogin = (data) => {
-    setUser({ isAdmin: false, email: data.email });
-    navigate('/user-dashboard');
-  };
-
-  const handleAdminLogin = () => {
-    setUser({ isAdmin: true, email: "admin@system" });
-    navigate('/admin-dashboard');
+  const onLogin = (data) => {
+    // Check if it's admin login (you can modify this logic as needed)
+    if (data.email === 'admin@system' && data.password === 'admin123') {
+      setUser({ isAdmin: true, email: data.email });
+    } else {
+      // Regular user login
+      setUser({ isAdmin: false, email: data.email });
+    }
+    navigate('/dashboard');
   };
 
   const handleForgotPassword = (data) => {
@@ -75,74 +72,52 @@ function LoginPage({ setUser, prefill = {} }) {
 
   return (
     <div className="form-container">
-      <div className="login-toggle-group">
-        <button
-          className={`login-toggle-btn${!showAdmin ? ' active' : ''}`}
-          onClick={() => { setShowAdmin(false); setShowForgot(false); setForgotMsg(''); }}
-          type="button"
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit(onLogin)}>
+        <input
+          type="email"
+          placeholder="Email"
+          {...register('email')}
+        />
+        {errors.email && <p style={{ color: 'red', margin: 0 }}>{errors.email.message}</p>}
+        <input
+          type="password"
+          placeholder="Password"
+          {...register('password')}
+        />
+        {errors.password && <p style={{ color: 'red', margin: 0 }}>{errors.password.message}</p>}
+        <button type="submit">Login</button>
+      </form>
+      
+      <p style={{ margin: '10px 0 0 0' }}>
+        <span
+          className="toggle-link"
+          onClick={() => { setShowForgot(true); setForgotMsg(''); }}
+          style={{ fontSize: '0.98rem' }}
         >
-          User Login
-        </button>
-        <button
-          className={`login-toggle-btn${showAdmin ? ' active' : ''}`}
-          onClick={() => { setShowAdmin(true); setShowForgot(false); setForgotMsg(''); }}
-          type="button"
-        >
-          Admin Login
-        </button>
-      </div>
-      {showAdmin ? (
-        <div style={{ textAlign: 'center' }}>
-          <h2>Admin Login</h2>
-          <button onClick={handleAdminLogin} className="admin-login-btn">Login as Admin</button>
-        </div>
-      ) : (
-        <>
-          <h2>User Login</h2>
-          <form onSubmit={handleSubmit(onUserLogin)}>
-            <input
-              type="email"
-              placeholder="Email"
-              {...register('email')}
-            />
-            {errors.email && <p style={{ color: 'red', margin: 0 }}>{errors.email.message}</p>}
-            <input
-              type="password"
-              placeholder="Password"
-              {...register('password')}
-            />
-            {errors.password && <p style={{ color: 'red', margin: 0 }}>{errors.password.message}</p>}
-            <button type="submit">Login</button>
-          </form>
-          <p style={{ margin: '10px 0 0 0' }}>
-            <span
-              className="toggle-link"
-              onClick={() => { setShowForgot(true); setForgotMsg(''); }}
-              style={{ fontSize: '0.98rem' }}
-            >
-              Forgot password?
-            </span>
-          </p>
-          {showForgot && (
-            <form onSubmit={handleForgotSubmit(handleForgotPassword)} style={{ marginTop: 10 }}>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                {...registerForgot('email')}
-              />
-              {forgotErrors.email && <p style={{ color: 'red', margin: 0 }}>{forgotErrors.email.message}</p>}
-              <button type="submit" className="admin-login-btn" style={{ width: '100%' }}>
-                Send Reset Link
-              </button>
-              {forgotMsg && <p style={{ color: 'green', marginTop: 8 }}>{forgotMsg}</p>}
-            </form>
-          )}
-          <p>
-            Don't have an account?{' '}
-            <span className="toggle-link" onClick={() => navigate('/signup')}>Sign up</span>
-          </p>
-        </>
+          Forgot password?
+        </span>
+      </p>
+      
+      {showForgot && (
+        <form onSubmit={handleForgotSubmit(handleForgotPassword)} style={{ marginTop: 10 }}>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            {...registerForgot('email')}
+          />
+          {forgotErrors.email && <p style={{ color: 'red', margin: 0 }}>{forgotErrors.email.message}</p>}
+          <button type="submit" className="admin-login-btn" style={{ width: '100%' }}>
+            Send Reset Link
+          </button>
+          {forgotMsg && <p style={{ color: 'green', marginTop: 8 }}>{forgotMsg}</p>}
+        </form>
       )}
+      
+      <p>
+        Don't have an account?{' '}
+        <span className="toggle-link" onClick={() => navigate('/signup')}>Sign up</span>
+      </p>
     </div>
   );
 }
